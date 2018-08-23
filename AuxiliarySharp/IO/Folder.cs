@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace AuxiliarySharp.IO
 {
@@ -35,7 +34,7 @@ namespace AuxiliarySharp.IO
             NoAppcontainerRedirection = 0x00010000,
             AliasOnly = 0x80000000
         }
-        private static Dictionary<KnownFolders, string> KnownFolderList = new Dictionary<KnownFolders, string>()
+        private static Dictionary<KnownFolders, string> _knownFolderList = new Dictionary<KnownFolders, string>()
         {
             { KnownFolders.Contacts,     "{56784854-C6CB-462B-8169-88E350ACB882}" },
             { KnownFolders.Desktop,      "{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}" },
@@ -55,7 +54,7 @@ namespace AuxiliarySharp.IO
         public static string GetKnownFolder(KnownFolders type)
         {
             int result = SHGetKnownFoldersPath(
-                new Guid(KnownFolderList[type]),
+                new Guid(_knownFolderList[type]),
                 (uint)KnownFoldersFlags.DontVerify,
                 new IntPtr(0),
                 out IntPtr outPath);
@@ -64,7 +63,7 @@ namespace AuxiliarySharp.IO
         }
         public static IEnumerable<string> GetKnownFolders()
         {
-            return KnownFolderList.Keys.Select(x => GetKnownFolder(x));
+            return _knownFolderList.Keys.Select(x => GetKnownFolder(x));
         }
     }
 }
