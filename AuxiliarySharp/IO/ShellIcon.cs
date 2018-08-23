@@ -6,7 +6,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace AuxiliaryToolsSharp.IO
+namespace AuxiliarySharp.IO
 {
     public static class ShellIcon
     {

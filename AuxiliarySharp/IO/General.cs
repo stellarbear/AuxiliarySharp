@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 
-namespace AuxiliaryToolsSharp.IO
+namespace AuxiliarySharp.IO
 {
     public static class General
     {

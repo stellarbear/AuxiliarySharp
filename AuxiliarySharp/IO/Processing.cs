@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System.Text;
 
-namespace AuxiliaryToolsSharp.IO
+namespace AuxiliarySharp.IO
 {
     public static class Processing
     {

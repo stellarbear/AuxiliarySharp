@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace AuxiliaryToolsSharp.IO
+namespace AuxiliarySharp.IO
 {
     public static class Drive
     {
