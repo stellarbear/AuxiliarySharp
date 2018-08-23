@@ -1,5 +1,5 @@
 # StringsSharp
-Just a bunch of useful methods
+Just a bunch of useful methods. Nuget package is [available](https://www.nuget.org/packages/AuxiliarySharp/) provided.
 
 # Method list
 * Drive
