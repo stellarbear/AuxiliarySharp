@@ -91,6 +91,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuxiliarySharp.cs" />
     <Compile Include="IO\Drive.cs" />
     <Compile Include="IO\Folder.cs" />
     <Compile Include="IO\General.cs" />
