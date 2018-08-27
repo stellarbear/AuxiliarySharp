@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 
 namespace AuxiliarySharp.IO
@@ -59,7 +60,7 @@ namespace AuxiliarySharp.IO
             long bytes = Math.Abs(fileSizeInBytes);
             int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
             double num = Math.Round(bytes / Math.Pow(1024, place), 1);
-            return String.Join("\t", (Math.Sign(fileSizeInBytes) * num).ToString(CultureInfo.InvariantCulture), suf[place]);
+            return $"{((Math.Sign(fileSizeInBytes) * num).ToString(CultureInfo.InvariantCulture))}\t{(suf[place])}";
         }
 
         public static bool CheckIfFileIsAccessible(string filepath)
