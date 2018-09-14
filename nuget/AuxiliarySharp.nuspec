@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>AuxiliarySharp</id>
-    <version>0.4.0</version>
+    <version>0.5.1</version>
     <title>AuxiliarySharp</title>
     <authors>stellarbears</authors>
     <owners>stellarbears</owners>
@@ -18,6 +18,7 @@
     </dependencies>
   </metadata>
   <files>
+    <file src="Release\AnyCPU\AuxiliarySharp.dll" target="lib/net" />
     <file src="Release\**\AuxiliarySharp.dll" target="build/net" />
     <file src="Release\**\AuxiliarySharp.props" target="build/net" />
 </files>
