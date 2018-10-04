@@ -1,5 +1,6 @@
 ﻿using Alphaleonis.Win32.Filesystem;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Text;
 
 namespace AuxiliarySharp.IO
@@ -31,6 +32,39 @@ namespace AuxiliarySharp.IO
             }
 
             return result;
+        }
+        public static IEnumerable<byte[]> ReadFileByChunk(string filename, int chunkSize = 1024 * 1024 * 100 /*100 Mb*/, int covering = 0)
+        {
+            long size = new System.IO.FileInfo(filename).Length;
+            if (File.Exists(filename))
+            {
+                using (System.IO.FileStream fs = new System.IO.FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                {
+                    fs.Seek(-covering, System.IO.SeekOrigin.Current);
+
+                    byte[] buffer = new byte[chunkSize];
+                    fs.Read(buffer, 0, chunkSize);
+
+                    yield return buffer;
+                }
+            }
+        }
+        public static IEnumerable<string> ReadFileByChunkAsString(string filename, int chunkSize = 1024 * 1024 * 100 /*100 Mb*/, int covering = 0)
+        {
+            foreach (byte[] array in ReadFileByChunk(filename, chunkSize, covering))
+            {
+                yield return Encoding.Default.GetString(array);
+            }
+        }
+        public static IEnumerable<string> ReadFileByLine(string filename)
+        {
+            if (File.Exists(filename))
+            {
+                foreach (string line in File.ReadLines(filename))
+                {
+                    yield return line;
+                }
+            }
         }
 
         public static void WriteFile(string filename, string content)
