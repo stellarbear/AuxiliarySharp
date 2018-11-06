@@ -40,7 +40,8 @@ namespace AuxiliarySharp.IO
             {
                 using (System.IO.FileStream fs = new System.IO.FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
                 {
-                    fs.Seek(-covering, System.IO.SeekOrigin.Current);
+                    int coveringSeek = -covering > 0 ? -covering : 0;
+                    fs.Seek(coveringSeek, System.IO.SeekOrigin.Current);
 
                     byte[] buffer = new byte[chunkSize];
                     fs.Read(buffer, 0, chunkSize);
@@ -48,6 +49,23 @@ namespace AuxiliarySharp.IO
                     yield return buffer;
                 }
             }
+        }
+
+        public static byte[] ReadFileChunk(string filename, int chunkSize = 1024 * 1024 * 100 /*100 Mb*/)
+        {
+            long size = new System.IO.FileInfo(filename).Length;
+            if (File.Exists(filename))
+            {
+                using (System.IO.FileStream fs = new System.IO.FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                {
+                    byte[] buffer = new byte[chunkSize];
+                    fs.Read(buffer, 0, chunkSize);
+
+                    return buffer;
+                }
+            }
+
+            return null;
         }
         public static IEnumerable<string> ReadFileByChunkAsString(string filename, int chunkSize = 1024 * 1024 * 100 /*100 Mb*/, int covering = 0)
         {
