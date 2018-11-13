@@ -33,25 +33,34 @@ namespace AuxiliarySharp.IO
 
             return result;
         }
-        public static IEnumerable<byte[]> ReadFileByChunk(string filename, int chunkSize = 1024 * 1024 * 100 /*100 Mb*/, int covering = 0)
+        public static IEnumerable<byte[]> ReadFileByChunk(string filename, long chunkSize = 1024 * 1024 * 100 /*100 Mb*/, long covering = 0)
         {
             long size = new System.IO.FileInfo(filename).Length;
             if (File.Exists(filename))
             {
                 using (System.IO.FileStream fs = new System.IO.FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
                 {
-                    int coveringSeek = -covering > 0 ? -covering : 0;
-                    fs.Seek(coveringSeek, System.IO.SeekOrigin.Current);
 
-                    byte[] buffer = new byte[chunkSize];
-                    fs.Read(buffer, 0, chunkSize);
+                    while (fs.Position < size)
+                    {
+                        long coveringSeek = covering > 0 ? -covering : 0;
 
-                    yield return buffer;
+                        if (fs.Position > -coveringSeek)
+                            fs.Seek(coveringSeek, System.IO.SeekOrigin.Current);
+
+                        if (size - fs.Position < chunkSize)
+                            chunkSize = size - fs.Position;
+
+                        byte[] buffer = new byte[chunkSize];
+                        fs.Read(buffer, 0, (int)chunkSize);
+
+                        yield return buffer;
+                    }
                 }
             }
         }
 
-        public static byte[] ReadFileChunk(string filename, int chunkSize = 1024 * 1024 * 100 /*100 Mb*/)
+        public static byte[] ReadFileChunk(string filename, long chunkSize = 1024 * 1024 * 100 /*100 Mb*/)
         {
             long size = new System.IO.FileInfo(filename).Length;
             if (File.Exists(filename))
@@ -59,7 +68,7 @@ namespace AuxiliarySharp.IO
                 using (System.IO.FileStream fs = new System.IO.FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
                 {
                     byte[] buffer = new byte[chunkSize];
-                    fs.Read(buffer, 0, chunkSize);
+                    fs.Read(buffer, 0, (int)chunkSize);
 
                     return buffer;
                 }
@@ -67,7 +76,7 @@ namespace AuxiliarySharp.IO
 
             return null;
         }
-        public static IEnumerable<string> ReadFileByChunkAsString(string filename, int chunkSize = 1024 * 1024 * 100 /*100 Mb*/, int covering = 0)
+        public static IEnumerable<string> ReadFileByChunkAsString(string filename, long chunkSize = 1024 * 1024 * 100 /*100 Mb*/, long covering = 0)
         {
             foreach (byte[] array in ReadFileByChunk(filename, chunkSize, covering))
             {
