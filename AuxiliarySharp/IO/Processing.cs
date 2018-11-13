@@ -40,13 +40,19 @@ namespace AuxiliarySharp.IO
             {
                 using (System.IO.FileStream fs = new System.IO.FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
                 {
-                    int coveringSeek = -covering > 0 ? -covering : 0;
-                    fs.Seek(coveringSeek, System.IO.SeekOrigin.Current);
 
-                    byte[] buffer = new byte[chunkSize];
-                    fs.Read(buffer, 0, chunkSize);
+                    while (fs.Position < size)
+                    {
+                        int coveringSeek = covering > 0 ? -covering : 0;
 
-                    yield return buffer;
+                        if (fs.Position > -coveringSeek)
+                            fs.Seek(coveringSeek, System.IO.SeekOrigin.Current);
+
+                        byte[] buffer = new byte[chunkSize];
+                        fs.Read(buffer, 0, chunkSize);
+
+                        yield return buffer;
+                    }
                 }
             }
         }
