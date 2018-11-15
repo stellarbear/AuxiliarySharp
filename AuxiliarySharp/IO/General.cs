@@ -30,10 +30,15 @@ namespace AuxiliarySharp.IO
             return Uri.UnescapeDataString(relRoot.MakeRelativeUri(fullPath).ToString()).Replace("/", "\\");
         }
 
-        public static void OpenDirectory(string filename)
+        public static void DirectorySelect(string filename)
         {
             if (Directory.Exists(Path.GetDirectoryName(filename)))
                 Process.Start("explorer.exe", "/select, \"" + filename + "\"");
+        }
+        public static void DirectoryOpen(string filename)
+        {
+            if (Directory.Exists(Path.GetDirectoryName(filename)))
+                Process.Start("explorer.exe", filename);
         }
 
         public static string GetHumanReadableFileSize(string filepath)
